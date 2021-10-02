@@ -45,9 +45,9 @@ int main(int argc, char **argv){
   void *p_par = (void*) &pars;
 
   double xend=18.5;       // meters to plate
-  double z0=1.4;             // height of release [m]
-  double theta0=1;         // angle of velocity at release (degrees)
-                                      // convert to radians before using!
+  double z0=1.4;          // height of release [m]
+  double theta0=1;        // angle of velocity at release (degrees)
+                          // convert to radians before using!
   bool showPlot=false;    // keep this flag false by default
   
   // allow changing the parameters from the command line
