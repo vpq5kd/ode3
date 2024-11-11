@@ -12,7 +12,7 @@ LDFLAGS    = $(ROOTLIBS) $(ROOTGLIBS) -Wl,-rpath,$(ODELIB) -L$(ODELIB) -lode
 GXX	   = g++ $(CXXFLAGS)
 
 
-EXES=baseball1 baseball2 RKnDemo RKnStep RKnTest
+EXES=baseball1 baseball2 RKnDemo RKnStep RKnTest projGSL
 
 
 all: $(EXES)
@@ -32,7 +32,8 @@ baseball1: baseball1.cpp $(ODELIB)/RKn.hpp
 baseball2: baseball2.cpp $(ODELIB)/RKn.hpp 
 	$(GXX) $(CXXFLAGS) -o$@ $@.cpp $(LDFLAGS)
 
-
+projGSL: projGSL.cpp
+	$(GXX) $(CXXFLAGS) -o$@ $@.cpp $(LDFLAGS)
 
 
 clean:
