@@ -32,6 +32,51 @@ struct Params {
   double b;   // b,c params for air resistance
   double c;
 };
+  double fx(double x, const vector<double> &y, void *params){
+  	(void) x;
+	return y[1];
+  }
+
+  double fvx(double x, const vector<double> &y, void *params){
+	Params *p = (Params*) params;
+	double vx = y[1], vz = y[3];
+	double v = sqrt(vx*vx + vz*vz);
+	double Fd = p->b*v + p->c*v*v;
+	return -(Fd*vx)/(p->m*v);	
+  }
+
+  double fz(double x, const vector<double> &y, void *params){
+  	(void) x; 
+	return y[3];
+  }
+
+  double fvz(double x, const vector<double> &y, void *params){
+  	Params *p = (Params *) params;
+	double vx = y[1], vz = y[3]; 
+	double v = sqrt(vx*vx + vz*vz);
+	double Fd = p->b*v +p->c*v*v;
+	return -p->g -(Fd*vz)/(p->m*v);
+  }
+
+  double f_stop(double x, const vector<double> &y, void *params){
+  	if (y[0] >= 18.5) return 1;
+	return 0;
+  }
+
+  double test_v0(double v0){
+  	vector<pfunc_t> fn = {fx, fvx, fz, fvz}; 
+	theta = theta0 * M_PI/180;
+  	vector<double> y0(4);
+ 	y0[0] = 0.0;
+  	y0[1] = v0*cos(theta);
+  	y0[2] = z0;
+  	y0[3] = v0*sin(theta);
+
+	int steps = 100;
+	RK4SolveN(fn, y0, 0, 5, params, f_stop);
+	return y0[2];
+  }
+
 
 int main(int argc, char **argv){
 
@@ -70,9 +115,18 @@ int main(int argc, char **argv){
       fprintf (stderr, "Unknown option `%c'.\n", optopt);
     }
   TApplication theApp("App", &argc, argv); // init ROOT App for displays
+  double low  = 0.0;
+  double high = 100.0;
+  double v0_test = 0;
+  for (int i = 0; i < 100; i++){
+  	v0_test = 0.5*(high+low);
+	double z_test = test_v0(v0_test);
+	if (z_test > 0.9) high = v0_test;
+	else low = v0_test;
+  
+  }
 
-
-  double vPitch = 0;   // m/s of pitch needed to land in strike zone at 0.9 meters
+  double vPitch = v0_test;   // m/s of pitch needed to land in strike zone at 0.9 meters
   // write code to solve for vPitch here
 
 
