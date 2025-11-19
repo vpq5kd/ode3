@@ -98,7 +98,7 @@ int main(int argc, char **argv){
   Params pars;
   pars.g=9.81;
   pars.m=10.0;
-  pars.air_k=0;
+  pars.air_k=0.1;
   void *p_par = (void*) &pars;
 
   double theta=45;   // initial angle degrees
@@ -152,7 +152,7 @@ int main(int argc, char **argv){
   
   double x=0;           // t0
   double xmax=20;  // tmax
-  int nsteps=5;
+  int nsteps=200;
   // fixed step size algorithm
   auto tgN = RK4SolveN(v_fun, y, nsteps, x, xmax, p_par, f_stop);
   // example of variable step algorithm, here the estimate accuracy is limited to 1e-4
