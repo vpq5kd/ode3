@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 mass = np.arange(.001, 10000)
 gravity = 9.8
 drag = 0.1
-vterm = np.sqrt(mass*gravity/1000*drag)
+vterm = np.sqrt((mass/1000)*gravity/drag)
 
 
 plt.style.use("dark_background")
