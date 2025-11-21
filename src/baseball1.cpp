@@ -74,8 +74,11 @@ struct Params {
 	double x0 = 0; 
 	
 	int steps = 5000;
-	RK4SolveN(fn, y0,steps, x0, 0.5, params, f_stop);
-	return y0[2];
+	auto tgN=RK4SolveN(fn, y0,steps, x0, 2, params, f_stop);
+
+	double z_final, x;
+	tgN[2].GetPoint(tgN[2].GetN()-1,x, z_final);
+	return z_final;
   }
 
 
