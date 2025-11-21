@@ -41,6 +41,7 @@ struct Params {
 	Params *p = (Params*) params;
 	double vx = y[1], vz = y[3];
 	double v = sqrt(vx*vx + vz*vz);
+	if (v ==0) return 0.0;
 	double Fd = p->b*v + p->c*v*v;
 	return -(Fd*vx)/(p->m*v);	
   }
@@ -54,12 +55,15 @@ struct Params {
   	Params *p = (Params *) params;
 	double vx = y[1], vz = y[3]; 
 	double v = sqrt(vx*vx + vz*vz);
+	if (v == 0) return -p->g;
 	double Fd = p->b*v +p->c*v*v;
 	return -p->g -(Fd*vz)/(p->m*v);
   }
 
   double f_stop(double x, const vector<double> &y, void *params){
-  	if (y[0] >= 18.5) return 1;
+  	(void) x;
+	(void) params;
+	if (y[0] >= 18.5) return 1 ;
 	return 0;
   }
 
@@ -74,7 +78,7 @@ struct Params {
 	double x0 = 0; 
 	
 	int steps = 5000;
-	auto tgN=RK4SolveN(fn, y0,steps, x0, 2, params, f_stop);
+	auto tgN=RK4SolveN(fn, y0,steps, x0, 18.5, params, f_stop);
 
 	double z_final, x;
 	tgN[2].GetPoint(tgN[2].GetN()-1,x, z_final);
@@ -88,9 +92,9 @@ int main(int argc, char **argv){
   Params pars;
   pars.g=9.81;
   pars.m=0.145;    
-  pars.d=0.0075;   
-  pars.b=1.6e-4;  
-  pars.c=0.25;
+  pars.d=0.075;   
+  pars.b=1.6e-4*pars.d;  
+  pars.c=0.25*pars.d*pars.d;
   void *p_par = (void*) &pars;
 
   double xend=18.5;       // meters to plate
@@ -119,15 +123,14 @@ int main(int argc, char **argv){
       fprintf (stderr, "Unknown option `%c'.\n", optopt);
     }
   TApplication theApp("App", &argc, argv); // init ROOT App for displays
-  double low  = 20.0;
-  double high = 60.0;
-  double v0_test = 0;
+  double low  = 10;
+  double high = 80;
+  double v0_test;
   for (int i = 0; i < 100; i++){
   	v0_test = 0.5*(high+low);
 	double z_test = test_v0(v0_test, z0, theta0, p_par);
-	cout << z_test << endl;
-	if (z_test > 0.9) high = v0_test;
-	else low = v0_test;
+	if (z_test < 0.9) low = v0_test;
+	else high = v0_test;
   
   }
 

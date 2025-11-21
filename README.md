@@ -27,6 +27,12 @@ Optional parameters [default values]<br>
 
 **baseball1**:  Starter template for first baseball problem
 
+********************************
+(xend,z0,theta0) = (18.500000,1.400000,1.000000)
+v_pitch = 48.050014 m/s
+********************************
+
+
 **baseball2**:  Starter template for second baseball problem
 
 **baseball_drag.ipynb**: this notebook describes the drag force equations used in the text.
