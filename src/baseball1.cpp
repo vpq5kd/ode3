@@ -72,8 +72,9 @@ struct Params {
   	y0[2] = z0;
   	y0[3] = v0*sin(theta);
 	double x0 = 0; 
+	
 	int steps = 5000;
-	RK4SolveN(fn, y0,steps, x0, 2.0, params, f_stop);
+	RK4SolveN(fn, y0,steps, x0, 0.5, params, f_stop);
 	return y0[2];
   }
 
@@ -121,6 +122,7 @@ int main(int argc, char **argv){
   for (int i = 0; i < 100; i++){
   	v0_test = 0.5*(high+low);
 	double z_test = test_v0(v0_test, z0, theta0, p_par);
+	cout << z_test << endl;
 	if (z_test > 0.9) high = v0_test;
 	else low = v0_test;
   
