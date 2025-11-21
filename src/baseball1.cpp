@@ -72,8 +72,8 @@ struct Params {
   	y0[2] = z0;
   	y0[3] = v0*sin(theta);
 	double x0 = 0; 
-	int steps = 100;
-	RK4SolveN(fn, y0,steps, x0, 5.0, params, f_stop);
+	int steps = 5000;
+	RK4SolveN(fn, y0,steps, x0, 2.0, params, f_stop);
 	return y0[2];
   }
 
