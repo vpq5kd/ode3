@@ -63,17 +63,17 @@ struct Params {
 	return 0;
   }
 
-  double test_v0(double v0){
+  double test_v0(double v0, double z0, double theta0, void * params){
   	vector<pfunc_t> fn = {fx, fvx, fz, fvz}; 
-	theta = theta0 * M_PI/180;
+	double theta = theta0 * M_PI/180;
   	vector<double> y0(4);
  	y0[0] = 0.0;
   	y0[1] = v0*cos(theta);
   	y0[2] = z0;
   	y0[3] = v0*sin(theta);
-
+	double x0 = 0; 
 	int steps = 100;
-	RK4SolveN(fn, y0, 0, 5, params, f_stop);
+	RK4SolveN(fn, y0,steps, x0, 5.0, params, f_stop);
 	return y0[2];
   }
 
@@ -115,12 +115,12 @@ int main(int argc, char **argv){
       fprintf (stderr, "Unknown option `%c'.\n", optopt);
     }
   TApplication theApp("App", &argc, argv); // init ROOT App for displays
-  double low  = 0.0;
-  double high = 100.0;
+  double low  = 20.0;
+  double high = 60.0;
   double v0_test = 0;
   for (int i = 0; i < 100; i++){
   	v0_test = 0.5*(high+low);
-	double z_test = test_v0(v0_test);
+	double z_test = test_v0(v0_test, z0, theta0, p_par);
 	if (z_test > 0.9) high = v0_test;
 	else low = v0_test;
   
