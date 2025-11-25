@@ -61,7 +61,7 @@ double fvz(double x, const vector<double> &y, void * params){
         double vx = y[1], vy = y[3], vz = y[5];
 	double v = sqrt(vx*vx + vy * vy + vz * vz);
 	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
-	return (-p->g)-(-fv*v*vz)-(p->B*p->w*vx*sin(phi));
+	return (-p->g)-(fv*v*vz)-(p->B*p->w*vx*sin(p->phi));
 }
 
 int main(int argc, char **argv){
