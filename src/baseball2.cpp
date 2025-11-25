@@ -71,7 +71,7 @@ double f_stop(double x, const vector<double> &y, void *params){
 	return 0;
 }
 
-vector<TGraph> throw_baseball(double theta, double w, double phi){
+vector<TGraph> throw_baseball(double theta, double w, double phi, double v0){
     Params pars;
     vector<double> y0(6);
     pars.g = 9.81;
@@ -80,7 +80,7 @@ vector<TGraph> throw_baseball(double theta, double w, double phi){
     pars.B = 4.1e-4;
     void *p_par = (void *) &pars;
 
-    double v0 = 37.9984;
+    v0 = v0 *0.44704;
     theta = theta * M_PI/180;
     double h = 1.4e-4;
     double steps = 1/h;
@@ -96,7 +96,7 @@ vector<TGraph> throw_baseball(double theta, double w, double phi){
     
     double x0 = 0;
 
-    return RK4SolveN(fn, y0, steps, x0, 18.5, p_par, f_stop);
+    return RK4SolveN(fn, y0, steps, x0, 18.44, p_par, f_stop);
 }
 int main(int argc, char **argv){
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv){
   // curve ip=1
   // screwball ip=2
   // fast ip=3
-  int ip=0;    // default pitch
+  int ip=1;    // default pitch
   int c;
   while ((c = getopt (argc, argv, "p:n")) != -1)
     switch (c) {
@@ -131,20 +131,26 @@ int main(int argc, char **argv){
   if (ip==0){
     cout << "Setting up initial conditions for slider" << endl;
     //SetupSlider(y0);
-    tgN = throw_baseball(1, 1800, 0);   
+    tgN = throw_baseball(1, 1800, 0, 85);   
     fig_name = "Slider";
   }
   else if (ip==1){
     cout << "Setting up initial conditions for curveball" << endl;
+    tgN = throw_baseball(1, 1800, 45,85);
+    fig_name = "Curve";
     //SetupCurve(y0);
   }
   else if (ip==2){
     cout << "Setting up initial conditions for screwball" << endl;
     //SetupScrewball(y0);
+    tgN = throw_baseball(1, 1800, 135, 85);
+    fig_name = "Screw";
   }
   else {
     cout << "Setting up initial conditions for fastball" << endl;
     //SetupFastball(y0);
+    tgN = throw_baseball(1, 1800, 225, 95);
+    fig_name = "Fast";
   }
 
   TApplication theApp("App", &argc, argv); // init ROOT App for displays
@@ -188,7 +194,7 @@ int main(int argc, char **argv){
     // to compare to  plots in Fitzpatrick, output your results in **feet**
   // do not change these lines
   printf("********************************\n");
-  printf("Coordinates when x=60 feet\n");
+  printf("Coordinates when x=60.6 feet\n");
   printf("(x,y,z) = (%lf,%lf,%lf)\n",xend,yend,zend);
   printf("(vx,vy,vz) = (%lf,%lf,%lf)\n",vxend,vyend,vzend);
   printf("********************************\n");
