@@ -1,4 +1,4 @@
-# ode3
+# ode3 Sophia Spaner (vpq5kd)
 
 physx630 odelib
 ---
