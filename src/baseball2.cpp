@@ -124,7 +124,14 @@ int main(int argc, char **argv){
     double x0 = 0;
 
     auto tgN = RK4SolveN(fn, y0, steps, x0, 20.0, p_par, f_stop);
+    double vx_final, vy_final, vz_final, xx,xy,xz;
 
+    tgN[1].GetPoint(tgN[1].GetN()-1, xx, vx_final);
+    tgN[3].GetPoint(tgN[3].GetN()-1, xy, vy_final);
+    tgN[5].GetPoint(tgN[5].GetN()-1, xz, vz_final);
+
+    double speed = sqrt((vx_final*vx_final) * (vy_final*vy_final) * (vz_final*vz_final);
+    cout << "slider speed = " << speed << "(m/s)" << endl;
 
   }
   else if (ip==1){
