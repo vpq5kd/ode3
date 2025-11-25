@@ -20,7 +20,17 @@
 #include <cstdlib>
 
 using namespace std;
+double fx(double x, const vector<double> &y, void *params){
+  	(void) x; 
+	return y[1];
+}
+double fvx(double x, const  vector<double> &y, void *params){
+	(void) x;
+	double v = sqrt(vx*vx + vy * vy + vz * vz);
+	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
+	double vx = y[1];
 
+}
 
 int main(int argc, char **argv){
 
