@@ -20,7 +20,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-
+#include <string>
 using namespace std;
 
 struct Params{
@@ -127,11 +127,12 @@ int main(int argc, char **argv){
   TString title;
 
   vector<TGraph> tgN;
+  string fig_name;
   if (ip==0){
     cout << "Setting up initial conditions for slider" << endl;
     //SetupSlider(y0);
     tgN = throw_baseball(1, 1800, 0);   
-
+    fig_name = "slider";
   }
   else if (ip==1){
     cout << "Setting up initial conditions for curveball" << endl;
@@ -187,7 +188,7 @@ int main(int argc, char **argv){
     // to compare to  plots in Fitzpatrick, output your results in **feet**
   // do not change these lines
   printf("********************************\n");
-  printf("Coordinates when x=60.6 feet\n");
+  printf("Coordinates when x=60 feet\n");
   printf("(x,y,z) = (%lf,%lf,%lf)\n",xend,yend,zend);
   printf("(vx,vy,vz) = (%lf,%lf,%lf)\n",vxend,vyend,vzend);
   printf("********************************\n");
@@ -204,6 +205,8 @@ int main(int argc, char **argv){
     yx.Draw("L SAME");
     x_end->SetLineColor(kGray);
     x_end->Draw("same");
+    string filename = fig_name +".png";
+    c1->SaveAs(filename.c_str());
     theApp.Run();
   }
   
