@@ -132,7 +132,7 @@ int main(int argc, char **argv){
     cout << "Setting up initial conditions for slider" << endl;
     //SetupSlider(y0);
     tgN = throw_baseball(1, 1800, 0);   
-    fig_name = "slider";
+    fig_name = "Slider";
   }
   else if (ip==1){
     cout << "Setting up initial conditions for curveball" << endl;
@@ -198,7 +198,8 @@ int main(int argc, char **argv){
     cout << "Press ^c to exit" << endl;
     theApp.SetIdleTimer(30,".q");  // set up a failsafe timer to end the program  
     TCanvas *c1 = new TCanvas("c1", "outputs" , 800, 600);
-    zx.SetTitle("; x (ft); y (ft) / z (ft)");
+    string title = fig_name + "; x (ft); y (ft) / z (ft)";
+    zx.SetTitle(title.c_str());
     zx.Draw("AL");
     zx.GetYaxis()->SetRangeUser(-4,2);
     yx.SetLineStyle(2);
