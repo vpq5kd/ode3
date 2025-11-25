@@ -97,6 +97,8 @@ int main(int argc, char **argv){
     }
 
   TString title;
+
+  vector<TGraph> tgN;
   if (ip==0){
     cout << "Setting up initial conditions for slider" << endl;
     //SetupSlider(y0);
@@ -123,7 +125,7 @@ int main(int argc, char **argv){
     
     double x0 = 0;
 
-    auto tgN = RK4SolveN(fn, y0, steps, x0, 18.5, p_par, f_stop);
+    tgN = RK4SolveN(fn, y0, steps, x0, 18.5, p_par, f_stop);
     double vx_final, vy_final, vz_final, xx,xy,xz;
 
     tgN[1].GetPoint(tgN[1].GetN()-1, xx, vx_final);
@@ -149,12 +151,21 @@ int main(int argc, char **argv){
 
   TApplication theApp("App", &argc, argv); // init ROOT App for displays
 
-  double xend=60;   // feet
-  double yend=0;    // tbd
-  double zend=0;    // tbd
-  double vxend=0;
-  double vyend=0;
-  double vzend=0;
+    double x_final, y_final, z_final, vx_final, vy_final, vz_final, xx,xvx,xy,xvy, xz, xvz;
+    tgN[0].GetPoint(tgN[0].GetN()-1, xx, x_final);
+    tgN[1].GetPoint(tgN[1].GetN()-1, xvx, vx_final);
+    tgN[2].GetPoint(tgN[2].GetN()-1, xy, y_final);
+    tgN[3].GetPoint(tgN[3].GetN()-1, xvy, vy_final);
+    tgN[4].GetPoint(tgN[4].GetN()-1, xz, z_final);
+    tgN[5].GetPoint(tgN[5].GetN()-1, xvz, vz_final);
+
+
+  double xend=x_final;   // feet
+  double yend=y_final;    // tbd
+  double zend = z_final;    // tbd
+  double vxend=vx_final;
+  double vyend=vy_final;
+  double vzend=vz_final;
 
   // write code here
 
@@ -163,7 +174,7 @@ int main(int argc, char **argv){
   // do not change these lines
   printf("********************************\n");
   printf("Coordinates when x=60 feet\n");
-  printf("(x,y,x) = (%lf,%lf,%lf)\n",xend,yend,zend);
+  printf("(x,y,z) = (%lf,%lf,%lf)\n",xend,yend,zend);
   printf("(vx,vy,vz) = (%lf,%lf,%lf)\n",vxend,vyend,vzend);
   printf("********************************\n");
 
