@@ -63,6 +63,11 @@ double fvz(double x, const vector<double> &y, void * params){
 	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
 	return (-p->g)-(fv*v*vz)-(p->B*p->w*vx*sin(p->phi));
 }
+double f_stop(double x, const vector<double> &y, void *params){
+	(void) x;
+	if (y[0] >= 18.47) return 1;
+	return 0;
+}
 
 int main(int argc, char **argv){
 
@@ -95,6 +100,32 @@ int main(int argc, char **argv){
   if (ip==0){
     cout << "Setting up initial conditions for slider" << endl;
     //SetupSlider(y0);
+    Params pars;
+    pars.g = 9.81;
+    pars.w = 1800;
+    pars.phi = 0;
+    pars.B = 4.1e-4;
+    void *p_par = (void *) &pars;
+
+    double v0 = 37.9984;
+    double theta = 1 * M_PI/180;
+    double h = 1.4e-4;
+    double steps = 1/h;
+
+    y0[0] = 0.0;
+    y0[1] = v0*cos(theta);
+    y0[2] = 0.0;
+    y0[3] = 0.0;
+    y0[4] = 0.0;
+    y0[5] = v0*sin(theta);
+
+    vector<pfunc_t> fn = {fx,fy,fz,fvx,fvy,fvz};
+    
+    double x0 = 0;
+
+    auto tgN = RK4SolveN(fn, y0, steps, x0, 20.0, p_par, f_stop);
+
+
   }
   else if (ip==1){
     cout << "Setting up initial conditions for curveball" << endl;
