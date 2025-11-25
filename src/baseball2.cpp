@@ -20,16 +20,48 @@
 #include <cstdlib>
 
 using namespace std;
+
+struct Params{
+	double B;
+	double phi;
+	double w; 
+	double g;
+};
 double fx(double x, const vector<double> &y, void *params){
   	(void) x; 
 	return y[1];
 }
 double fvx(double x, const  vector<double> &y, void *params){
+	Params *p = (Params*) params;
 	(void) x;
+	double vx = y[1], vy = y[3], vz = y[5];
 	double v = sqrt(vx*vx + vy * vy + vz * vz);
 	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
-	double vx = y[1];
-
+	return (-fv*v*vx) + p->B*p->w*((vz*sin(p->phi))-(vy*cos(p->phi)));
+}
+double fy(double x, const vector<double> &y, void *params){
+  	(void) x; 
+	return y[3];
+}
+double fvy(double x, const vector<double> &y, void *params){
+  	Params * p = (Params*) params;
+	(void) x;
+        double vx = y[1], vy = y[3], vz = y[5];
+	double v = sqrt(vx*vx + vy * vy + vz * vz);
+	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
+	return (-fv*v*vy) + (p->B*p->w*vx*cos(p->phi));
+}
+double fz(double x, const vector<double> &y, void *params){
+	(void) x;
+	return y[5]; 
+}
+double fvz(double x, const vector<double> &y, void * params){
+	Params * p = (Params*) params;
+	(void) x;
+        double vx = y[1], vy = y[3], vz = y[5];
+	double v = sqrt(vx*vx + vy * vy + vz * vz);
+	double fv = 0.0039 + (0.0058)/(1 + exp((v-35)/5));
+	return (-p->g)-(-fv*v*vz)-(p->B*p->w*vx*sin(phi));
 }
 
 int main(int argc, char **argv){
